@@ -46,8 +46,25 @@ func (moon Moon) runMiddleware(i int, ctx context.Context, w http.ResponseWriter
 
 func (moon Moon) Then(handler Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// ctx := appengine.NewContext(r)
+		var ctx context.Context
+		if Context != nil {
+			ctx = Context(r)
+		} else {
+			ctx = context.TODO()
+		}
 
+		moon.runMiddleware(0, ctx, w, r, handler)
+	})
+}
+
+func (moon Moon) ThenFunc(fn HandlerWithContextFunc) http.Handler {
+	handler := func(ctx context.Context) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fn(ctx, w, r)
+		})
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var ctx context.Context
 		if Context != nil {
 			ctx = Context(r)

@@ -101,3 +101,11 @@ func TestGojiBasicAuthAuthorized(t *testing.T) {
 	res := serveAndRequest(st, true)
 	assertEquals(t, "Hello: user, pass", res)
 }
+
+func TestContextWithFunc(t *testing.T) {
+	st := New(tokenMiddlewareA, tokenMiddlewareB).ThenFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Tokens are: %v, %v", ctx.Value("tokenA"), ctx.Value("tokenB"))
+	})
+	res := serveAndRequest(st, false)
+	assertEquals(t, "Tokens are: 123, 456", res)
+}
