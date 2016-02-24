@@ -55,6 +55,31 @@ func Middleware(ctx context.Context, next moon.HandlerWithContext) http.Handler 
 }
 ```
 
+### contex.TODO() or appengine.NewContext(request) ?
+
+By default a `context.Context` is created for each request and is an instance of
+
+```go
+ctx := context.TODO()
+```
+
+this behaviour can be modified by setting a callback for `moon.Context`
+ie. if you run you app in appengine:
+
+```go
+func init() {
+  ...
+
+  // just setup it once; then this function is called for every request
+  moon.Context = func(r *http.Request) {
+    return appengine.NewContext(r)
+  }  
+
+  ...
+}
+```
+
+
 ### 3rd party middlewares
 
 Compatibility is provided with all 3rd party middlewares using the following signature
