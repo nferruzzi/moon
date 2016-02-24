@@ -26,20 +26,24 @@ Middlewares are chained with Moon.New
 middlewares := moon.New(middleware1, middleware2, middleware3, ...)
 ```
 
-And the final handler is appended by calling method Then
+The final handler is appended by `moon.Handler` to `moon.Then`
 
 ```
 r.Handle("/api", middlewares.Then(handler))
 ```
 
-Inside a middleware you can advance the chain by calling  
+or by passing a function to `moon.ThenFunc`
 
 ```
+r.Handle("/api", middlewares.ThenFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+  ...
+}))
+```
 
-next.ServeHTTP(ctx, w, r)
 
-ie.
+Inside a middleware you can advance the chain by calling `next.ServeHTTP(ctx, w, r)`
 
+```
 func Middleware(ctx context.Context, next moon.HandlerWithContext) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     ....
