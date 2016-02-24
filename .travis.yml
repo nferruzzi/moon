@@ -6,13 +6,13 @@ go:
   - 1.6
   - tip
 
+env:
+  - secure: "s+l3lnW3Gr62LHMN1f3XhCzSxaUMpCkZlaFigqUFizmSrOXc++ZQnb05LwkqjGwAzu4wb+/tTPMgKdHvUg4AqTjbRVqhwQ8iL+3rIcswb1LjXOBW7ATiQERifsIhJNmw+EDZlPrmaAwWBO6eT2JHw3u+3IxzWi+juXphEZBrzFEnUtv8aJUu4eztc18TLqej7dh50qQjX3uWMzCwf21zHYqCUs1tzMpasRWZCAb/V96TMrsY926cpXB3y/qJLkBiLs147lqMkG57Cquykc1FAiwXOk2m0wa7pXB6CpoKevjrAxb41UuRiQ+95NblTjj5Q+GOcrZ5+9vEPmW+hX4GqrucB/KatBp1R+1Yija5ecD3RYRnU8zqIS5PiTJJjMBM8g1Rz2EpxzZdih0qt1Sn02QK/VOx+ioXtLClcPlJg1XpagTPkxDP72tv5Bi9vvK0vRDwFs5zN5ZPh8VDP0jzUT3dHLXO9za+hWbMxwO9mbJqqkma40ozahkKjC/cExxmq0r1ismRJBUB5sSxKZ8eU9NjdfHJTN1dFlZ1VGTk+FQFFkWdiK5U113xUtsQl4xq1mAUdlodJiNU4BmyUZ4nKih1p/w1a+/N437OpK9elKgrayCTEN/IdgF3+5Z1Y5Nb4+E+bva7/0yOWS1XUDsae7HJ52o+H7aCMZOqMVll45g="
+
 script:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
   - go test -v -covermode=count -coverprofile=coverage.out
 
 after_success:
-  - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
-
-env:
-  - secure: "s+l3lnW3Gr62LHMN1f3XhCzSxaUMpCkZlaFigqUFizmSrOXc++ZQnb05LwkqjGwAzu4wb+/tTPMgKdHvUg4AqTjbRVqhwQ8iL+3rIcswb1LjXOBW7ATiQERifsIhJNmw+EDZlPrmaAwWBO6eT2JHw3u+3IxzWi+juXphEZBrzFEnUtv8aJUu4eztc18TLqej7dh50qQjX3uWMzCwf21zHYqCUs1tzMpasRWZCAb/V96TMrsY926cpXB3y/qJLkBiLs147lqMkG57Cquykc1FAiwXOk2m0wa7pXB6CpoKevjrAxb41UuRiQ+95NblTjj5Q+GOcrZ5+9vEPmW+hX4GqrucB/KatBp1R+1Yija5ecD3RYRnU8zqIS5PiTJJjMBM8g1Rz2EpxzZdih0qt1Sn02QK/VOx+ioXtLClcPlJg1XpagTPkxDP72tv5Bi9vvK0vRDwFs5zN5ZPh8VDP0jzUT3dHLXO9za+hWbMxwO9mbJqqkma40ozahkKjC/cExxmq0r1ismRJBUB5sSxKZ8eU9NjdfHJTN1dFlZ1VGTk+FQFFkWdiK5U113xUtsQl4xq1mAUdlodJiNU4BmyUZ4nKih1p/w1a+/N437OpK9elKgrayCTEN/IdgF3+5Z1Y5Nb4+E+bva7/0yOWS1XUDsae7HJ52o+H7aCMZOqMVll45g=" 
+  - go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -service=travis-ci -repotoken $COVERALLS_TOKEN
