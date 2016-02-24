@@ -24,7 +24,7 @@ Middlewares are chained with Moon.New
 middlewares := moon.New(middleware1, middleware2, middleware3, ...)
 ```
 
-And the final handler is append by calling method Then
+And the final handler is appended by calling method Then
 
 ```
 r.Handle("/api", middlewares.Then(handler))
@@ -53,9 +53,13 @@ Compatibility is provided with all 3rd party middlewares with the following sign
 func (http.Handler) http.Handler
 ```
 
-by calling the method moon.Adapt
+by calling the method
 
-ie. GOJI BasicAuth
+```
+moon.Adapt
+```
+
+ie. GOJI SimpleBasicAuth
 
 ```
 goji_middleware := moon.Adapt(httpauth.SimpleBasicAuth("user", "pass"))
