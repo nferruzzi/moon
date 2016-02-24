@@ -78,6 +78,7 @@ func TestContextRoot(t *testing.T) {
 		ctx := context.TODO()
 		return context.WithValue(ctx, "tokenA", "789")
 	}
+	defer func() { Context = nil }()
 	st := New(tokenMiddlewareB).Then(tokenHandler)
 	res := serveAndRequest(st, false)
 	assertEquals(t, "Tokens are: 789, 456", res)

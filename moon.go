@@ -63,17 +63,7 @@ func (moon Moon) ThenFunc(fn HandlerWithContextFunc) http.Handler {
 			fn(ctx, w, r)
 		})
 	}
-
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var ctx context.Context
-		if Context != nil {
-			ctx = Context(r)
-		} else {
-			ctx = context.TODO()
-		}
-
-		moon.runMiddleware(0, ctx, w, r, handler)
-	})
+	return moon.Then(handler)
 }
 
 func Adapt(fn func(http.Handler) http.Handler) Middleware {
