@@ -1,4 +1,5 @@
 # Moon
+[![Build Status](https://travis-ci.org/nferruzzi/moon.svg?branch=master)](https://travis-ci.org/nferruzzi/moon)
 
 Moon is a simple middleware chaining system with requests context handled by [/x/net/context](https://blog.golang.org/context) context.Context
 
