@@ -8,8 +8,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"google.golang.org/appengine"
-
 	"github.com/goji/httpauth"
 	"golang.org/x/net/context"
 )
@@ -70,12 +68,19 @@ func tokenHandler(ctx context.Context) http.Handler {
 }
 
 func TestContext(t *testing.T) {
-	Context = func(r *http.Request) context.Context {
-		return appengine.NewContext(r)
-	}
 	st := New(tokenMiddlewareA, tokenMiddlewareB).Then(tokenHandler)
 	res := serveAndRequest(st, false)
 	assertEquals(t, "Tokens are: 123, 456", res)
+}
+
+func TestContextRoot(t *testing.T) {
+	Context = func(r *http.Request) context.Context {
+		ctx := context.TODO()
+		return context.WithValue(ctx, "tokenA", "789")
+	}
+	st := New(tokenMiddlewareB).Then(tokenHandler)
+	res := serveAndRequest(st, false)
+	assertEquals(t, "Tokens are: 789, 456", res)
 }
 
 func authHandler(ctx context.Context) http.Handler {
