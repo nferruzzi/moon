@@ -21,7 +21,7 @@ and final handler
 func handler(context.Context) http.Handler
 ```
 
-Middlewares are chained with `Moon.New`
+Middlewares are chained with `moon.New`
 
 ```go
 middlewares := moon.New(middleware1, middleware2, middleware3, ...)
