@@ -28,7 +28,7 @@ middlewares := moon.New(middleware1, middleware2, middleware3, ...)
 
 `moon.New` returns a `Moon` struct.
 
-The final handler is appended by `moon.Handler` to `Moon.Then`
+The final handler is appended by passing `moon.Handler` to `Moon.Then`
 
 ```go
 r.Handle("/api", middlewares.Then(handler))
@@ -54,17 +54,17 @@ func Middleware(ctx context.Context, next moon.HandlerWithContext) http.Handler 
 }
 ```
 
-Compatibility is provided with all 3rd party middlewares with the following signature
+### 3rd party middlewares
+
+Compatibility is provided with all 3rd party middlewares using the following signature
 
 ```go
 func (http.Handler) http.Handler
 ```
 
-by calling the method
+just wrap the function with
 
-```go
-moon.Adapt
-```
+`moon.Adapt`
 
 ie. GOJI SimpleBasicAuth
 
