@@ -30,7 +30,7 @@ And the final handler is appended by calling method Then
 r.Handle("/api", middlewares.Then(handler))
 ```
 
-Inside an handler you can advance the chain by calling  
+Inside a middleware you can advance the chain by calling  
 
 ```
 
