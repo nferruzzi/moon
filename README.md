@@ -10,64 +10,65 @@ No magic GO code is required to use Moon.
 
 Middlewares use this signature
 
-```
+```go
 func (context.Context, moon.HandlerWithContext) http.Handler
 ```
 
 and final handler
 
-```
+```go
 func handler(context.Context) http.Handler
 ```
 
-Middlewares are chained with Moon.New
+Middlewares are chained with `Moon.New`
 
-```
+```go
 middlewares := moon.New(middleware1, middleware2, middleware3, ...)
 ```
 
-The final handler is appended by `moon.Handler` to `moon.Then`
+`moon.New` returns a `Moon` struct.
 
-```
+The final handler is appended by `moon.Handler` to `Moon.Then`
+
+```go
 r.Handle("/api", middlewares.Then(handler))
 ```
 
-or by passing a function to `moon.ThenFunc`
+or by passing a function to `Moon.ThenFunc`
 
-```
+```go
 r.Handle("/api", middlewares.ThenFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
   ...
 }))
 ```
 
-
 Inside a middleware you can advance the chain by calling `next.ServeHTTP(ctx, w, r)`
 
-```
+```go
 func Middleware(ctx context.Context, next moon.HandlerWithContext) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    ....
+    // ...
     next.ServeHTTP(ctx, w, r)
-    ....
+    // ...
 	})
 }
 ```
 
 Compatibility is provided with all 3rd party middlewares with the following signature
 
-```
+```go
 func (http.Handler) http.Handler
 ```
 
 by calling the method
 
-```
+```go
 moon.Adapt
 ```
 
 ie. GOJI SimpleBasicAuth
 
-```
+```go
 goji_middleware := moon.Adapt(httpauth.SimpleBasicAuth("user", "pass"))
 middlewares := moon.New(goji_middlware, ...).Then(...)
 
@@ -75,7 +76,7 @@ middlewares := moon.New(goji_middlware, ...).Then(...)
 
 ### Quick example
 
-```
+```go
 // Appengine test app
 package app
 
