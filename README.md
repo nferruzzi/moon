@@ -47,11 +47,11 @@ Inside a middleware you can advance the chain by calling `next(ctx)`
 
 ```go
 func Middleware(ctx context.Context, next moon.Next) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     // ...
     next(ctx)
     // ...
-	})
+  })
 }
 ```
 
