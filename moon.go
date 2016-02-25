@@ -9,10 +9,7 @@ import (
 type Middleware func(context.Context, Next) http.Handler
 type Handler func(context.Context) http.Handler
 type Next func(context.Context)
-type HandlerWithContext interface {
-	ServeHTTP(context.Context, http.ResponseWriter, *http.Request)
-}
-type HandlerWithContextFunc func(context.Context, http.ResponseWriter, *http.Request)
+type HandlerFunc func(context.Context, http.ResponseWriter, *http.Request)
 
 type Moon struct {
 	mws []Middleware
@@ -54,7 +51,7 @@ func (moon Moon) Then(handler Handler) http.Handler {
 	})
 }
 
-func (moon Moon) ThenFunc(fn HandlerWithContextFunc) http.Handler {
+func (moon Moon) ThenFunc(fn HandlerFunc) http.Handler {
 	handler := func(ctx context.Context) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			fn(ctx, w, r)
