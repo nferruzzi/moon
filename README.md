@@ -12,7 +12,7 @@ No magic GO code is required to use Moon.
 Middlewares use this signature
 
 ```go
-func (context.Context, moon.HandlerWithContext) http.Handler
+func (context.Context, moon.Next) http.Handler
 ```
 
 and final handler
@@ -43,13 +43,13 @@ r.Handle("/api", middlewares.ThenFunc(func(ctx context.Context, w http.ResponseW
 }))
 ```
 
-Inside a middleware you can advance the chain by calling `next.ServeHTTP(ctx, w, r)`
+Inside a middleware you can advance the chain by calling `next(ctx)`
 
 ```go
-func Middleware(ctx context.Context, next moon.HandlerWithContext) http.Handler {
+func Middleware(ctx context.Context, next moon.Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     // ...
-    next.ServeHTTP(ctx, w, r)
+    next(ctx)
     // ...
 	})
 }
@@ -118,23 +118,23 @@ import (
 	"github.com/nferruzzi/moon"
 )
 
-func MWRequireJSON(ctx context.Context, next moon.HandlerWithContext) http.Handler {
+func MWRequireJSON(ctx context.Context, next moon.Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ct := r.Header.Get("Content-Type")
 		if ct == "application/json" {
 			ctx = context.WithValue(ctx, "Content-Type", ct)
-			next.ServeHTTP(ctx, w, r)
+			next(ctx)
 		} else {
 			w.WriteHeader(http.StatusBadRequest)
 		}
 	})
 }
 
-func MWRequireUser(ctx context.Context, next moon.HandlerWithContext) http.Handler {
+func MWRequireUser(ctx context.Context, next moon.Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// let's pretend some checks are made
 		ctx = context.WithValue(ctx, "User", "user")
-		next.ServeHTTP(ctx, w, r)
+		next(ctx)
 	})
 }
 

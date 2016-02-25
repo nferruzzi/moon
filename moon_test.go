@@ -47,17 +47,17 @@ func serveAndRequest(h http.Handler, auth bool) string {
 	return string(resBody)
 }
 
-func tokenMiddlewareA(ctx context.Context, next HandlerWithContext) http.Handler {
+func tokenMiddlewareA(ctx context.Context, next Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx = context.WithValue(ctx, "tokenA", "123")
-		next.ServeHTTP(ctx, w, r)
+		next(ctx)
 	})
 }
 
-func tokenMiddlewareB(ctx context.Context, next HandlerWithContext) http.Handler {
+func tokenMiddlewareB(ctx context.Context, next Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx = context.WithValue(ctx, "tokenB", "456")
-		next.ServeHTTP(ctx, w, r)
+		next(ctx)
 	})
 }
 
