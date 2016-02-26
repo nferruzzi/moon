@@ -79,6 +79,15 @@ func init() {
 }
 ```
 
+### Included middlewares
+
+#### Panic
+
+Recover from panics with status code `http.StatusInternalServerError` and a dump of the goroutine stack trace
+
+```go
+middlewares := moon.New(moon.Panic, ...).Then(...)
+```
 
 ### 3rd party middlewares
 

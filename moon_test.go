@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/goji/httpauth"
@@ -15,6 +16,12 @@ import (
 func assertEquals(t *testing.T, e interface{}, o interface{}) {
 	if e != o {
 		t.Errorf("\n...expected = %v\n...obtained = %v", e, o)
+	}
+}
+
+func assertHasPrefix(t *testing.T, o interface{}, prefix string) {
+	if strings.HasPrefix(o.(string), prefix) == false {
+		t.Errorf("\n...expected prefix = %v\n...obtained = %v", prefix, o)
 	}
 }
 
