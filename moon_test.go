@@ -86,8 +86,8 @@ func TestContextRoot(t *testing.T) {
 		return context.WithValue(ctx, "tokenA", "789")
 	}
 	defer func() { Context = nil }()
-	st := New(tokenMiddlewareB).Then(tokenHandler)
-	res := serveAndRequest(st, false)
+	mws := New(tokenMiddlewareB).Then(tokenHandler)
+	res := serveAndRequest(mws, false)
 	assertEquals(t, "Tokens are: 789, 456", res)
 }
 
@@ -99,21 +99,21 @@ func authHandler(ctx context.Context) http.Handler {
 }
 
 func TestGojiBasicAuthUnauthorized(t *testing.T) {
-	st := New(Adapt(httpauth.SimpleBasicAuth("user", "pass"))).Then(authHandler)
-	res := serveAndRequest(st, false)
+	mws := New(Adapt(httpauth.SimpleBasicAuth("user", "pass"))).Then(authHandler)
+	res := serveAndRequest(mws, false)
 	assertEquals(t, "Unauthorized\n", res)
 }
 
 func TestGojiBasicAuthAuthorized(t *testing.T) {
-	st := New(Adapt(httpauth.SimpleBasicAuth("user", "pass"))).Then(authHandler)
-	res := serveAndRequest(st, true)
+	mws := New(Adapt(httpauth.SimpleBasicAuth("user", "pass"))).Then(authHandler)
+	res := serveAndRequest(mws, true)
 	assertEquals(t, "Hello: user, pass", res)
 }
 
 func TestContextWithFunc(t *testing.T) {
-	st := New(tokenMiddlewareA, tokenMiddlewareB).ThenFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	mws := New(tokenMiddlewareA, tokenMiddlewareB).ThenFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Tokens are: %v, %v", ctx.Value("tokenA"), ctx.Value("tokenB"))
 	})
-	res := serveAndRequest(st, false)
+	res := serveAndRequest(mws, false)
 	assertEquals(t, "Tokens are: 123, 456", res)
 }
