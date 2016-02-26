@@ -8,6 +8,8 @@ import (
 	"golang.org/x/net/context"
 )
 
+// Middlware Panic, catch the panic throw from the inner middlewares
+// Write http.StatusInternalServerError and the goroutine stacktrace
 func Panic(ctx context.Context, next Next) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
